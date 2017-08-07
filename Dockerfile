@@ -1,5 +1,5 @@
 FROM debian:jessie
-MAINTAINER Jeremy Shimko <jeremy.shimko@gmail.com>
+MAINTAINER Ben Piper <ben@benpiper.com>
 
 ENV MONGO_MAJOR 3.4
 ENV MONGO_VERSION 3.4.0
@@ -26,12 +26,12 @@ ENV MONGO_ARBITER mongo3:27017
 
 # mongo root user (change me!)
 ENV MONGO_ROOT_USER root
-ENV MONGO_ROOT_PASSWORD root123
+ENV MONGO_ROOT_PASSWORD Coast2018
 
 # mongo app user + database (change me!)
-ENV MONGO_APP_USER myAppUser
-ENV MONGO_APP_PASSWORD myAppPassword
-ENV MONGO_APP_DATABASE myAppDatabase
+ENV MONGO_APP_USER appuser
+ENV MONGO_APP_PASSWORD App2018
+ENV MONGO_APP_DATABASE appdb
 
 COPY scripts $MONGO_SCRIPTS_DIR
 
