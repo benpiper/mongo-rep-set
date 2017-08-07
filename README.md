@@ -6,7 +6,7 @@ Mongo version:  **3.4.0**
 
 ## About
 
-A MongoDB [replica set](https://docs.mongodb.org/v3.4/replication/) consists of at least 3 Mongo instances. In this case, they will be a primary, secondary, and an arbiter. To use this project as a replica set, you simply launch three instances of this container across three separate host servers and the primary will configure your users and replica set.  Also note that each server must be able to access the others (discovery must work in both directions).
+A MongoDB [replica set](https://docs.mongodb.org/v3.4/replication/) consists of at least 3 Mongo instances. In this case, they will be a primary, secondary, and a tertiary. To use this project as a replica set, you simply launch three instances of this container across three separate host servers and the primary will configure your users and replica set.  Also note that each server must be able to access the others (discovery must work in both directions).
 
 ## Setup
 
@@ -20,7 +20,7 @@ docker build -t yourname/mongo-rep-set:latest .
 
 ## Launch
 
-Now you're ready to start launching containers.  You need to launch the secondary and arbiter first so they're ready for the primary to configure them when it starts.
+Now you're ready to start launching containers.  You need to launch the secondary and tertiary first so they're ready for the primary to configure them when it starts.
 
 #### Secondary
 
