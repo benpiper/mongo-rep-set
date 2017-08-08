@@ -65,8 +65,8 @@ docker run -d --name db1 \
   -h db1 \
   -p 27017:27017 \
   -e "MONGO_ROLE=primary" \
-  -e "MONGO_SECONDARY=db1" \
-  -e "MONGO_TERTIARY=db2" \
+  -e "MONGO_SECONDARY=db2" \
+  -e "MONGO_TERTIARY=db3" \
   -e "MONGO_ROOT_USER=root" \
   -e "MONGO_ROOT_PASSWORD=Coast2018" \
   -e "MONGO_APP_USER=appuser" \
