@@ -29,7 +29,7 @@ docker run --name db2 -d -p 27017:27017 yourname/mongo-rep-set:latest
 ```
 
 ```sh
-docker run --name db3 -d -p 27017:27017 -e JOURNLING=false yourname/mongo-rep-set:latest
+docker run --name db3 -d -p 27017:27017 yourname/mongo-rep-set:latest
 ```
 
 #### Primary
