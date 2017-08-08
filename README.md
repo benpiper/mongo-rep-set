@@ -20,16 +20,31 @@ docker build -t yourname/mongo-rep-set:latest .
 
 ## Launch
 
-Now you're ready to start launching containers.  You need to launch the secondary and tertiary first so they're ready for the primary to configure them when it starts.
+Now you're ready to start launching containers.  You need to launch the secondary and tertiary first so they're ready for the primary to configure them when it starts. For both, we'll use the `--add-host` flag to create host entries so that the containers can resolve each other's IP addresses. If you have DNS resolution of containers in your environment, you can leave off these flags.
 
-#### Secondary and tertiary
+#### Secondary
 
 ```sh
-docker run --name db2 -d -p 27017:27017 yourname/mongo-rep-set:latest
+docker run -d --name db2 \
+  -h db2 \
+  -p 27017:27017
+  --add-host db1:192.168.99.100 \
+  --add-host db2:192.168.99.101 \
+  --add-host db3:192.168.99.102 \
+  benpiper/mongo-rep-set:latest
 ```
 
+#### Tertiary
+
+This is the same as the secondary, 
 ```sh
-docker run --name db3 -d -p 27017:27017 yourname/mongo-rep-set:latest
+docker run -d --name db3 \
+  -h db3 \
+  -p 27017:27017
+  --add-host db1:192.168.99.100 \
+  --add-host db2:192.168.99.101 \
+  --add-host db3:192.168.99.102 \
+  benpiper/mongo-rep-set:latest
 ```
 
 #### Primary
@@ -38,27 +53,31 @@ The primary is responsible for setting up users and configuring the replica set,
 
 ```sh
 docker run -d --name db1 \
+  -h db1
   -p 27017:27017 \
-  -e MONGO_ROLE="primary" \
-  -e MONGO_SECONDARY="hostname or IP of secondary" \
-  -e MONGO_TERTIARY="hostname or IP of tertiary" \
-  -e MONGO_ROOT_USER="myRootUser" \
-  -e MONGO_ROOT_PASSWORD="myRootUserPassword" \
-  -e MONGO_APP_USER="myAppUser" \
-  -e MONGO_APP_PASSWORD="myAppUserPassword" \
-  -e MONGO_APP_DATABASE="myAppDatabase" \
-  yourname/mongo-rep-set:latest
+  -e "MONGO_ROLE=primary" \
+  -e "MONGO_SECONDARY=db1" \
+  -e "MONGO_TERTIARY=db2" \
+  -e "MONGO_ROOT_USER=root" \
+  -e "MONGO_ROOT_PASSWORD=Coast2018" \
+  -e "MONGO_APP_USER=appuser" \
+  -e "MONGO_APP_PASSWORD=App2018" \
+  -e "MONGO_APP_DATABASE=appdb" \
+  --add-host db1:192.168.99.100 \
+  --add-host db2:192.168.99.101 \
+  --add-host db3:192.168.99.102 \
+  benpiper/mongo-rep-set:latest
 ```
 
-The primary will start up, configure your root and app users, shut down, and then start up once more and configure the replica set.  Assuming the secondary and tertiary are reachable, the server will now be ready for authenticated connections.  You can use the standard two server Mongo URL to connect to the primary/secondary like this:
+The primary will start up, configure your root and app users, shut down, and then start up once more and configure the replica set.  Assuming the secondary and tertiary are reachable, the server will now be ready for authenticated connections.
 
 #### Connect
 
-Note that the following connection url is using default env var values (more info on those below), so it should work if you haven't overwritten any of the variables yourself.
+You can use the standard two server Mongo URL to connect to the primary/secondary.
 
 ```sh
 
-mongodb://myAppUser:myAppUserPassword@db1:27017,db2:27017,db3:27017/myAppDatabase?replicaSet=rs0
+mongodb://appuser:App2018@db1:27017,db2:27017,db3:27017/appdb?replicaSet=rs0
 ```
 
 ## Environment Variables
@@ -91,5 +110,5 @@ MONGO_APP_DATABASE appdb
 From the worker running db1:
 
 ```sh
-docker exec db1 mongo mongodb://appuser:App2018@192.168.99.100:27017,192.168.99.101:27017,192.168.99.102:27017/appdb?replicaSet=rs0
+docker exec db1 mongo mongodb://appuser:App2018@db1:27017,db2:27017,db3:27017/appdb?replicaSet=rs0
 ```
