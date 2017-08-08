@@ -25,6 +25,8 @@ Or you can pull from the latest continuous build:
 docker pull benpiper/mongo-rep-set:latest
 ```
 
+For the following examples I'll use my image (benpiper/mongo-rep-set:latest), so be sure to change the image reference if you're using your own.
+
 ## Launch
 
 Now you're ready to start launching containers.  You need to launch the secondary and tertiary first so they're ready for the primary to configure them when it starts. For both, we'll use the `--add-host` flag to create host entries so that the containers can resolve each other's IP addresses. If you have DNS resolution of containers in your environment, you can leave off these flags.
@@ -34,7 +36,7 @@ Now you're ready to start launching containers.  You need to launch the secondar
 ```sh
 docker run -d --name db2 \
   -h db2 \
-  -p 27017:27017
+  -p 27017:27017 \
   --add-host db1:192.168.99.100 \
   --add-host db2:192.168.99.101 \
   --add-host db3:192.168.99.102 \
@@ -47,7 +49,7 @@ This is the same as the secondary,
 ```sh
 docker run -d --name db3 \
   -h db3 \
-  -p 27017:27017
+  -p 27017:27017 \
   --add-host db1:192.168.99.100 \
   --add-host db2:192.168.99.101 \
   --add-host db3:192.168.99.102 \
@@ -60,7 +62,7 @@ The primary is responsible for setting up users and configuring the replica set,
 
 ```sh
 docker run -d --name db1 \
-  -h db1
+  -h db1 \
   -p 27017:27017 \
   -e "MONGO_ROLE=primary" \
   -e "MONGO_SECONDARY=db1" \
