@@ -1,31 +1,31 @@
-mongo1:
+db1:
   restart: always
   environment:
     MONGO_ROLE: primary
   tty: true
-  hostname: mongo1
+  hostname: db1
   image: benpiper/mongo-rep-set:latest
   links:
-  - mongo2:mongo2
-  - mongo3:mongo3
+  - db2:db2
+  - db3:db3
   stdin_open: true
 
-mongo2:
+db2:
   restart: always
   tty: true
-  hostname: mongo2
+  hostname: db2
   image: benpiper/mongo-rep-set:latest
   links:
-  - mongo1:mongo1
-  - mongo3:mongo3
+  - db1:db1
+  - db3:db3
   stdin_open: true
 
-mongo3:
+db3:
   restart: always
   tty: true
-  hostname: mongo3
+  hostname: db3
   image: benpiper/mongo-rep-set:latest
   links:
-  - mongo1:mongo1
-  - mongo2:mongo2
+  - db1:db1
+  - db2:db2
   stdin_open: true
