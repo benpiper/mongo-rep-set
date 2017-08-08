@@ -14,8 +14,15 @@ You will need to create your own custom build of this image to generate a unique
 
 #### Build
 
+If you want to build the container yourself:
+
 ```sh
 docker build -t yourname/mongo-rep-set:latest .
+```
+
+Or you can pull from the latest continuous build:
+```sh
+docker pull benpiper/mongo-rep-set:latest
 ```
 
 ## Launch
