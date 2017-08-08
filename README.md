@@ -34,7 +34,7 @@ docker run --name db3 -d -p 27017:27017 -e JOURNLING=false yourname/mongo-rep-se
 
 #### Primary
 
-The primary is responsible for setting up users and configuring the replica set, so this is where all of the configuration happens. Once your secondary and arbiter are up and running, launch your primary with:
+The primary is responsible for setting up users and configuring the replica set, so this is where all of the configuration happens. Once your secondary and tertiary are up and running, launch your primary with:
 
 ```sh
 docker run -d
@@ -42,7 +42,7 @@ docker run -d
   -p 27017:27017 \
   -e MONGO_ROLE="primary" \
   -e MONGO_SECONDARY="hostname or IP of secondary" \
-  -e MONGO_TERTIARY="hostname or IP of arbiter" \
+  -e MONGO_TERTIARY="hostname or IP of tertiary" \
   -e MONGO_ROOT_USER="myRootUser" \
   -e MONGO_ROOT_PASSWORD="myRootUserPassword" \
   -e MONGO_APP_USER="myAppUser" \
@@ -51,7 +51,7 @@ docker run -d
   yourname/mongo-rep-set:latest
 ```
 
-The primary will start up, configure your root and app users, shut down, and then start up once more and configure the replica set.  Assuming the secondary and arbiter are reachable, the server will now be ready for authenticated connections.  You can use the standard two server Mongo URL to connect to the primary/secondary like this:
+The primary will start up, configure your root and app users, shut down, and then start up once more and configure the replica set.  Assuming the secondary and tertiary are reachable, the server will now be ready for authenticated connections.  You can use the standard two server Mongo URL to connect to the primary/secondary like this:
 
 #### Connect
 
@@ -73,18 +73,18 @@ MONGO_JOURNALING true
 MONGO_REP_SET rs0
 MONGO_AUTH true
 MONGO_OPLOG_SIZE # not set, but you can override the default
-MONGO_SECONDARY mongo2:27017
-MONGO_ARBITER mongo3:27017
+MONGO_SECONDARY db2:27017
+MONGO_TERTIARY db3:27017
 MONGO_DB_PATH /data/db
 
 # mongo root user
 MONGO_ROOT_USER root
-MONGO_ROOT_PASSWORD root123
+MONGO_ROOT_PASSWORD Coast2018
 
 # mongo app user + database (user is given oplog access)
-MONGO_APP_USER myAppUser
-MONGO_APP_PASSWORD myAppPassword
-MONGO_APP_DATABASE myAppDatabase
+MONGO_APP_USER appuser
+MONGO_APP_PASSWORD App2018
+MONGO_APP_DATABASE appdb
 ```
 
 ## Testing
