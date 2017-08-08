@@ -37,8 +37,7 @@ docker run --name db3 -d -p 27017:27017 yourname/mongo-rep-set:latest
 The primary is responsible for setting up users and configuring the replica set, so this is where all of the configuration happens. Once your secondary and tertiary are up and running, launch your primary with:
 
 ```sh
-docker run -d
-  --name db1
+docker run -d --name db1 \
   -p 27017:27017 \
   -e MONGO_ROLE="primary" \
   -e MONGO_SECONDARY="hostname or IP of secondary" \
