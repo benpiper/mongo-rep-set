@@ -90,5 +90,6 @@ MONGO_APP_DATABASE appdb
 
 From the worker running db1:
 
-docker exec db1 mongo --host db2 --port 27017
-docker exec db1 mongo --host db3 --port 27017
+```sh
+docker exec db1 mongo mongodb://appuser:App2018@192.168.99.100:27017,192.168.99.101:27017,192.168.99.102:27017/appdb?replicaSet=rs0
+```
